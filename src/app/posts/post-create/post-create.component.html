@@ -6,25 +6,32 @@
 <!-- event binding, adding in a template as an argument -->
 <!-- interpolation -->
 
-<mat-card>
-    <!-- input field for post's title -->
-    <mat-card-subtitle>
-        <h2>Title</h2>
-    </mat-card-subtitle>
-
-    <mat-form-field>
-        <input matInput [(ngModel)]="enteredTitle">
-    </mat-form-field>
-
-    <!-- input field for post's content -->
-    <mat-card-subtitle>
-        <h2>Content</h2>
-    </mat-card-subtitle>
-
-    <mat-form-field>
-        <textarea matInput rows="6" [(ngModel)]="enteredContent"></textarea>
-    </mat-form-field>   
-
-    <button mat-raised-button color="accent" (click)="onAddPost()">Save Post</button>
-
-</mat-card>
+<!-- template driven form -->
+<!--ngForm gives access to form object -->
+<form (submit)="onAddPost(postForm)" #postForm="ngForm">
+    <mat-card>
+            <!-- input field for post's title -->
+            <mat-card-subtitle>
+                <h2>Title</h2>
+            </mat-card-subtitle>
+        
+            <mat-form-field>
+                <!-- ngModel gives access to form field -->
+                <input matInput ngModel name="title" #title="ngModel" required>
+                <mat-error *ngIf="title.invalid">Please enter a title</mat-error>
+            </mat-form-field>
+        
+            <!-- input field for post's content -->
+            <mat-card-subtitle>
+                <h2>Content</h2>
+            </mat-card-subtitle>
+        
+            <mat-form-field>
+                <textarea matInput rows="6" ngModel name="content" #content="ngModel" required></textarea>
+                <mat-error *ngIf="content.invalid">Please enter some content</mat-error>
+            </mat-form-field>   
+        
+            <button mat-raised-button color="accent" type="submit">Save Post</button>
+        
+        </mat-card> 
+</form>
