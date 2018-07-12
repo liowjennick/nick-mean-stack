@@ -7,8 +7,22 @@
 <!-- interpolation -->
 
 <mat-card>
+    <!-- input field for post's title -->
+    <mat-card-subtitle>
+        <h2>Title</h2>
+    </mat-card-subtitle>
+
     <mat-form-field>
-        <textarea matInput rows="6" [(ngModel)]="enteredValue"></textarea>
+        <input matInput [(ngModel)]="enteredTitle">
+    </mat-form-field>
+
+    <!-- input field for post's content -->
+    <mat-card-subtitle>
+        <h2>Content</h2>
+    </mat-card-subtitle>
+
+    <mat-form-field>
+        <textarea matInput rows="6" [(ngModel)]="enteredContent"></textarea>
     </mat-form-field>   
 
     <button mat-raised-button color="accent" (click)="onAddPost()">Save Post</button>
