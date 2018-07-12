@@ -17,7 +17,13 @@
         
             <mat-form-field>
                 <!-- ngModel gives access to form field -->
-                <input matInput ngModel name="title" #title="ngModel" required>
+                <input 
+                matInput 
+                ngModel 
+                type="text" 
+                name="title" 
+                #title="ngModel" 
+                required>
                 <mat-error *ngIf="title.invalid">Please enter a title</mat-error>
             </mat-form-field>
         
@@ -27,7 +33,13 @@
             </mat-card-subtitle>
         
             <mat-form-field>
-                <textarea matInput rows="6" ngModel name="content" #content="ngModel" required></textarea>
+                <textarea 
+                matInput 
+                rows="4" 
+                ngModel 
+                name="content" 
+                #content="ngModel" 
+                required></textarea>
                 <mat-error *ngIf="content.invalid">Please enter some content</mat-error>
             </mat-form-field>   
         
