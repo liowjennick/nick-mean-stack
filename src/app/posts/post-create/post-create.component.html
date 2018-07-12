@@ -1,5 +1,3 @@
-<h2>Post Create Component</h2>
-
 <!-- directives are instruction you place on HTML elements -->
 <!-- property binding -->
 
@@ -8,24 +6,11 @@
 <!-- event binding, adding in a template as an argument -->
 <!-- interpolation -->
 
-
-<button (click)="onAddPost()">Save Post</button>
-
-<p>{{ newPost }}</p>
-
-<form class="example-form">
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Favorite food" value="Sushi">
-    </mat-form-field>
-  
-    <mat-form-field class="example-full-width">
-      <textarea matInput placeholder="Leave a comment"></textarea>
-    </mat-form-field>
-  </form>
-
-
 <mat-card>
     <mat-form-field>
         <textarea matInput rows="6" [(ngModel)]="enteredValue"></textarea>
     </mat-form-field>   
+
+    <button mat-raised-button color="accent" (click)="onAddPost()">Save Post</button>
+
 </mat-card>
