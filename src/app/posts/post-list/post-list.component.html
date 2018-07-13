@@ -17,4 +17,4 @@
     </mat-expansion-panel>
 </mat-accordion>
 
-<p class="info-text mat-body-1">No posts added yet</p>
+<p class="info-text mat-body-1" *ngIf="posts.length <= 0">No posts added yet</p>
