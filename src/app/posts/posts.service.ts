@@ -1,6 +1,7 @@
 import { Post } from './post.model';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({providedIn: 'root'})
 
@@ -9,18 +10,29 @@ export class PostsService {
     private posts: Post[] = [];
     private postsUpdated = new Subject<Post[]>();
 
-    getPosts() {
-        // ... pull out data from array and add it in 
-        // creating new array with old objects
-        return [...this.posts];
+    // can inject things into services too
+    constructor(private http: HttpClient) {
+        
     }
+
+
+    getPosts() {
+        // pull out data from backend 
+        // store it in post array
+        // fire update listener to inform component we got a new post
+        this.http.get<{message: string, posts: Post[]}>('http://localhost:3000/api/posts')
+            .subscribe((data) => {
+                this.posts = data.posts;
+                this.postsUpdated.next([...this.posts]);
+            });
+    }   
 
     getPostUpdateListener() {
         return this.postsUpdated.asObservable();
     }
 
     addPost(title: string, content: string) {
-        const post: Post = {title: title, content: content};
+        const post: Post = { id: null, title: title, content: content};
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
     }
