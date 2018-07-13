@@ -1,7 +1,10 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 // returns us an express app, big chain of middle ware
 const app = express();
+
+app.use(bodyParser.json());
 
 // this middleware allows cross origin resource sharing
 app.use((req, res, next) => {
@@ -17,9 +20,21 @@ app.use((req, res, next) => {
     next();
 })
 
+// triggers middleware when there is a post request
+app.post("/api/posts", (req, res, next) => {
+    // post request body has data
+    const post = req.body;
+    console.log(post);
+    // 201 success with added resources
+    // after success show json message
+    res.status(201).json({
+        message: 'Post added successfully'
+    });
+});
+
 // only if request targets that path localhost /
 // it will use this middleware
-app.use('/api/posts', (req, res, next) => {
+app.get('/api/posts', (req, res, next) => {
     const posts = [
         { 
             id: 'dashkj123', 
