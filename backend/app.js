@@ -35,6 +35,7 @@ app.use((req, res, next) => {
 
 // triggers middleware when there is a post request
 app.post("/api/posts", (req, res, next) => {
+
     // post request body has data
     const post = new Post({
         title: req.body.title,
@@ -46,7 +47,7 @@ app.post("/api/posts", (req, res, next) => {
     post.save();
 
     console.log(post);
-    
+
     // 201 success with added resources
     // after success show json message
     res.status(201).json({
@@ -57,24 +58,15 @@ app.post("/api/posts", (req, res, next) => {
 // only if request targets that path localhost /
 // it will use this middleware
 app.get('/api/posts', (req, res, next) => {
-    const posts = [
-        { 
-            id: 'dashkj123', 
-            title: 'First Server', 
-            content: 'Coming from the server'
-        },
-        { 
-            id: 'qwerkj123', 
-            title: 'Second Server', 
-            content: ' 2ndComing from the server'
-        }
-    ];
-    // send back json data
-    res.status(200).json({
-        message: 'Posts fetched succesfully',
-        posts: posts
-    });
-        
+    Post.find() //returns all documents from posts
+        .then((doc) => {
+            // send back json data
+            res.status(200).json({
+                message: 'Posts fetched succesfully',
+                posts: doc
+            });
+            console.log(doc);
+        })   
 });
 
 module.exports = app;
