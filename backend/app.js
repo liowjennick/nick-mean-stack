@@ -44,14 +44,14 @@ app.post("/api/posts", (req, res, next) => {
 
     // every model created with mongoose has a save function
     // collection name is the plural of models
-    post.save();
-
-    console.log(post);
-
-    // 201 success with added resources
-    // after success show json message
-    res.status(201).json({
-        message: 'Post added successfully'
+    post.save().then(result => {
+        console.log(result);
+        // 201 success with added resources
+        // after success show json message
+        res.status(201).json({
+            message: 'Post added successfully',
+            postId: result._id
+        });
     });
 });
 
