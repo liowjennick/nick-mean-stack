@@ -17,4 +17,8 @@ mat-card {
     margin-top: 1.5em;
 }
 
+mat-spinner {
+    margin: auto;
+}
+
  

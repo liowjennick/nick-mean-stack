@@ -8,8 +8,12 @@
 
 <!-- template driven form -->
 <!--ngForm gives access to form object -->
-<form (submit)="onSavePost(postForm)" #postForm="ngForm">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<form (submit)="onSavePost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
     <mat-card>
+
+
             <!-- input field for post's title -->  
             <mat-form-field>
                 <!-- ngModel gives access to form field -->
