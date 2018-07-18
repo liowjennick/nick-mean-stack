@@ -28,7 +28,8 @@ export class PostsService {
                     return {
                         title: post.title,
                         content: post.content,
-                        id: post._id
+                        id: post._id,
+                        imagePath: post.imagePath
                     };
                 });
             }))
@@ -53,12 +54,26 @@ export class PostsService {
         return this.http.get<{_id: string, title: string, content: string}>("http://localhost:3000/api/posts/" + id);
     }
 
-    addPost(title: string, content: string) {
-        const post: Post = { id: null, title: title, content: content};
-        this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', post)
+    addPost(title: string, content: string, image: File) {
+        // const post: Post = { id: null, title: title, content: content};
+
+        // data value that allows us to contains text value and blobs(file value)
+        // create new form data to allow image to be added
+        const postData = new FormData();
+        postData.append("title", title);
+        postData.append("content", content);
+        postData.append("image", image, title);
+
+        this.http.post<{message: string, post: Post}>('http://localhost:3000/api/posts', postData)
             .subscribe((data) => {
+                const post: Post = {
+                    id: data.post.id, 
+                    content: content, 
+                    title: title,
+                    imagePath: data.post.imagePath
+                };
                 console.log(data.message);
-                const id = data.postId;
+                const id = data.post.id;
                 post.id = id;
                 this.posts.push(post);
                 this.postsUpdated.next([...this.posts]);
@@ -71,7 +86,8 @@ export class PostsService {
         const post: Post = {
             id: id,
             title: title,
-            content: content
+            content: content,
+            imagePath: null
         }
 
         this.http
@@ -91,6 +107,7 @@ export class PostsService {
     deletePost(postId: string){
         this.http.delete("http://localhost:3000/api/posts/" + postId)
             .subscribe(() => {
+                // return all results from outdated posts that doesnt include the recently deleted post
                 const updatedPosts = this.posts.filter(post => post.id !== postId);
                 this.posts = updatedPosts;
                 this.postsUpdated.next([...this.posts]);

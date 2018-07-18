@@ -1,3 +1,6 @@
+// allow us to construct path that is safe to run on any os
+const path = require("path");
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -20,6 +23,10 @@ mongoose.connect('mongodb+srv://Nick:PfzELEQ3Lo873dUa@cluster0-3swpg.mongodb.net
 
 app.use(bodyParser.json());
 
+// make static image url accessible
+// any request targeting the image path is allow
+app.use("/images", express.static(path.join("backend/images")));
+
 // this middleware allows cross origin resource sharing
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', "*");
@@ -36,5 +43,6 @@ app.use((req, res, next) => {
 
 // first argument filter for request in this url
 app.use("/api/posts", postsRoutes);
+
 
 module.exports = app;

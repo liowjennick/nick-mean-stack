@@ -5,7 +5,9 @@ const mongoose = require('mongoose');
 const postSchema = mongoose.Schema({
     // learn more on mongoose docs
     title: { type: String, required: true },
-    content: { type: String, required: true }
+    content: { type: String, required: true },
+    // image path on backend
+    imagePath: { type: String, required: true }
 });
 
 // schema is not the model yet
