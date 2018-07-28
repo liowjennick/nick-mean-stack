@@ -72,6 +72,7 @@ router.get("", (req, res, next) => {
     const pageSize = +req.query.pagesize;
     const currentPage = +req.query.page;
     const postQuery = Post.find();
+    let fetchedPosts;
 
     // select a slice of post
     if (pageSize && currentPage) {
@@ -86,15 +87,17 @@ router.get("", (req, res, next) => {
     }
 
     // select all post
-    postQuery.find() //returns all documents from posts
+    postQuery //returns all documents from posts
         .then((doc) => {
-            // send back json data
+            fetchedPosts = doc;
+            return Post.count();
+        }).then(count => {
             res.status(200).json({
-                message: 'Posts fetched succesfully',
-                posts: doc
-            });
-            console.log(doc);
-        })   
+                message: "Posts fetch successfully",
+                posts: fetchedPosts,
+                maxPosts: count
+            })
+        });
 });
 
 router.get("/:id", (req, res, next) => {
