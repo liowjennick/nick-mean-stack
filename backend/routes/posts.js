@@ -65,8 +65,28 @@ router.post("", multer({storage: storage}).single("image"), (req, res, next) => 
 
 // only if request targets that path localhost /
 // it will use this middleware
+// query params(optional), can add to end of url separate by a ?
 router.get("", (req, res, next) => {
-    Post.find() //returns all documents from posts
+    // name of query is up to you
+    // all query are treated as string, add a plus to change it to numbers
+    const pageSize = +req.query.pagesize;
+    const currentPage = +req.query.page;
+    const postQuery = Post.find();
+
+    // select a slice of post
+    if (pageSize && currentPage) {
+        postQuery   
+            // mongoose provided - skip method
+            // will not retrive all elements, skip the first end post
+            // if you were on page 2, you will skip items(10 items) on page 1
+            .skip(pageSize * (currentPage - 1))
+            // limits amount of docs returned
+            // not recommended for large data as it loads every data
+            .limit(pageSize);
+    }
+
+    // select all post
+    postQuery.find() //returns all documents from posts
         .then((doc) => {
             // send back json data
             res.status(200).json({
