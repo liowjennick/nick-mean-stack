@@ -3,13 +3,14 @@ const Post = require('../models/post');
 // allow files to be uploaded
 const multer = require('multer');
 
-
 const router = express.Router();
 const MIME_TYPE_MAP = {
     'image/png': 'png',
     'image/jpeg': 'jpg',
     'image/jpg': 'jpg'
 };
+
+const checkAuth = require("../middleware/check-auth");
 
 // pass a js object, 2 keys
 // destination(a function that's executed when multer tries to save a file ). will return req file(file extracted) callback
@@ -35,7 +36,8 @@ const storage = multer.diskStorage({
 
 // triggers middleware when there is a post request
 // single - expecting a single file on image property 
-router.post("", multer({storage: storage}).single("image"), (req, res, next) => {
+// add another middleware to check for authentication
+router.post("", checkAuth, multer({storage: storage}).single("image"), (req, res, next) => {
     const url = req.protocol + '://' + req.get("host");
 
     // post request body has data
@@ -113,7 +115,7 @@ router.get("/:id", (req, res, next) => {
 // patch will update the field only 
 // put will replace the entire thing
 
-router.put("/:id", multer({storage: storage}).single("image") ,(req, res, next) => {
+router.put("/:id", checkAuth, multer({storage: storage}).single("image") ,(req, res, next) => {
     let imagePath = req.body.imagePath;
     if (req.file) {
         const url = req.protocol + '://' + req.get("host");
@@ -135,7 +137,7 @@ router.put("/:id", multer({storage: storage}).single("image") ,(req, res, next) 
     });
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", checkAuth, (req, res, next) => {
     Post.deleteOne({_id: req.params.id}).then(result => {
         console.log(result);
         res.status(200).json({
